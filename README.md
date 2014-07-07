@@ -5,7 +5,7 @@ REQUIREJS API
 
 1. [사용법](#Usage)  
  1. [자바스크립트 파일 로딩](#Load_JavaScript_Files)  
- 1. [data-main Entry Point](#data-main Entry Point)  
+ 1. [data-main Entry Point](#data-main_Entry_Point)  
  1. [Define a Module](#)  
   1. [Simple Name/Value Pairs](#)  
   1. [Definition Functions](#)  
@@ -104,5 +104,5 @@ Ideally the scripts you load will be modules that are defined by calling define(
 
 If you do not express the dependencies, you will likely get loading errors since RequireJS loads scripts asynchronously and out of order for speed.
 
-<a name="data-main Entry Point">
+<a name="data-main_Entry_Point">
 ## data-main Entry Point
