@@ -71,3 +71,38 @@ Similarly, to avoid a bunch of configuration, it is best to avoid deep folder hi
    * jquery.js
    * canvas.js
   * app.js
+
+in index.html:
+````html
+<script data-main="js/app.js" src="js/require.js"></script>
+````
+and in app.js:
+````javascript
+requirejs.config({
+    //By default load any module IDs from js/lib
+    baseUrl: 'js/lib',
+    //except, if the module ID starts with "app",
+    //load it from the js/app directory. paths
+    //config is relative to the baseUrl, and
+    //never includes a ".js" extension since
+    //the paths config could be for a directory.
+    paths: {
+        app: '../app'
+    }
+});
+
+// Start the main app logic.
+requirejs(['jquery', 'canvas', 'app/sub'],
+function   ($,        canvas,   sub) {
+    //jQuery, canvas and the app/sub module are all
+    //loaded and can be used here now.
+});
+````
+Notice as part of that example, vendor libraries like jQuery did not have their version numbers in their file names. It is recommended to store that version info in a separate text file if you want to track it, or if you use a tool like volo, it will stamp the package.json with the version information but keep the file on disk as "jquery.js". This allows you to have the very minimal configuration instead of having to put an entry in the "paths" config for each library. For instance, configure "jquery" to be "jquery-1.7.2".
+
+Ideally the scripts you load will be modules that are defined by calling define(). However, you may need to use some traditional/legacy "browser globals" scripts that do not express their dependencies via define(). For those, you can use the shim config. To properly express their dependencies.
+
+If you do not express the dependencies, you will likely get loading errors since RequireJS loads scripts asynchronously and out of order for speed.
+
+<a name="data-main Entry Point">
+## data-main Entry Point
