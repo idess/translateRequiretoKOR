@@ -2,38 +2,40 @@ REQUIREJS API
 =====================
 
 ##### Table of Contents
- [Usage](#Usage)
- [Load JavaScript Files](##Load JavaScript Files)
- [data-main Entry Point](##data-main Entry Point)
- [Define a Module](#)
- [Simple Name/Value Pairs](#)
- [Definition Functions](#)
- [Definition Functions with Dependencies](#)
- [Define a Module as a Function](#)
- [Define a Module with Simplified CommonJS Wrapper](#)
- [Define a Module with a name](#)
- [Other Module Notes](#)
- [Circular Dependencies](#)
- [Specify a JSONP Service Dependency](#)
- [Undefining a Module](#)
- [Mechanics](#)
- [Configuration Options](#)
- [Advanced Usage](#)
- [Loading Modules from Packages](#)
- [Multiversion Support](#)
- [Loading Code After Page Load](#)
- [Web Worker Support](#)
- [Rhino Support](#)
- [Handling Errors](#)
- [Loader Plugins](#)
- [Specify a Text File Dependency](#)
- [Page Load Event Support/DOM Ready](#)
- [Define an I18N Bundle](#)
 
+1. [사용법](#Usage)  
+ 1. [자바스크립트 파일 로딩](#Load_JavaScript_Files)  
+ 1. [data-main Entry Point](#data-main Entry Point)  
+ 1. [Define a Module](#)  
+  1. [Simple Name/Value Pairs](#)  
+  1. [Definition Functions](#)  
+  1. [Definition Functions with Dependencies](#)  
+  1. [Define a Module as a Function](#)  
+  1. [Define a Module with Simplified CommonJS Wrapper](#)  
+  1. [Define a Module with a name](#)  
+  1. [Other Module Notes](#)  
+  1. [Circular Dependencies](#)  
+  1. [Specify a JSONP Service Dependency](#)  
+  1. [Undefining a Module](#)  
+1. [Mechanics](#)  
+1. [Configuration Options](#)  
+1. [Advanced Usage](#)  
+ 1. [Loading Modules from Packages](#)  
+ 1. [Multiversion Support](#)  
+ 1. [Loading Code After Page Load](#)  
+ 1. [Web Worker Support](#)  
+ 1. [Rhino Support](#)  
+ 1. [Handling Errors](#)  
+1. [Loader Plugins](#)  
+ 1. [Specify a Text File Dependency](#)  
+ 1. [Page Load Event Support/DOM Ready](#)  
+ 1. [Define an I18N Bundle](#)  
 
-# Usage
+<a name="Usage">
+# 사용법
 
-## Load JavaScript Files
+<a name="Load_JavaScript_Files">
+## 자바스크립트 파일 로딩
 
 RequireJS takes a different approach to script loading than traditional &lt;script&gt; tags. While it can also run fast and optimize well, the primary goal is to encourage modular code. As part of that, it encourages using module IDs instead of URLs for script tags.
 
@@ -46,3 +48,26 @@ RequireJS loads all code relative to a baseUrl. The baseUrl is normally set to t
     loads a script that will have a module ID of 'main'-->
 <script data-main="scripts/main.js" src="scripts/require.js"></script>
 ```
+
+Or, baseUrl can be set manually via the RequireJS config. If there is no explicit config and data-main is not used, then the default baseUrl is the directory that contains the HTML page running RequireJS.
+
+RequireJS also assumes by default that all dependencies are scripts, so it does not expect to see a trailing ".js" suffix on module IDs. RequireJS will automatically add it when translating the module ID to a path. With the paths config, you can set up locations of a group of scripts. All of these capabilities allow you to use smaller strings for scripts as compared to traditional &lt;script&gt; tags.
+
+There may be times when you do want to reference a script directly and not conform to the "baseUrl + paths" rules for finding it. If a module ID has one of the following characteristics, the ID will not be passed through the "baseUrl + paths" configuration, and just be treated like a regular URL that is relative to the document:
+
+* Ends in ".js".
+* Starts with a "/".
+* Contains an URL protocol, like "http:" or "https:".
+
+In general though, it is best to use the baseUrl and "paths" config to set paths for module IDs. By doing so, it gives you more flexibility in renaming and configuring the paths to different locations for optimization builds.
+
+Similarly, to avoid a bunch of configuration, it is best to avoid deep folder hierarchies for scripts, and instead either keep all the scripts in baseUrl, or if you want to separate your library/vendor-supplied code from your app code, use a directory layout like this:
+* www/
+ * index.html
+ * js/
+  * app/
+   * sub.js
+  * lib/
+   * jquery.js
+   * canvas.js
+  * app.js
