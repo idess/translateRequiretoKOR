@@ -440,9 +440,15 @@ define(['a', 'exports'], function(a, exports) {
 ### Specify a JSONP Service Dependency(JSONP 서비스 디펜던시 작성하기)
 JSONP is a way of calling some services in JavaScript. It works across domains and it is an established approach to calling services that just require an HTTP GET via a script tag.
 
+JSONP는 자바스크립트에서 서비스를 호출하는 방법중 하나입니다. 이것은 도메인을 통해서 작동하고, script 태그를 통해서 http get을 요청하는 서비스를 연결하는 방법입니다.
+
 To use a JSONP service in RequireJS, specify "define" as the callback parameter's value. This means you can get the value of a JSONP URL as if it was a module definition.
 
+RequireJS에서 JSONP 서비스를 사용하기 위해, 파라미터의 값으로써 "define"에서 작성합니다.
+
 Here is an example that calls a JSONP API endpoint. In this example, the JSONP callback parameter is called "callback", so "callback=define" tells the API to wrap the JSON response in a "define()" wrapper:
+
+아래는 JSONP API를 호출하는 예제입니다. 이 예제에서, JSONP callback 파라미터는 "callback"이라고 불려지고, "callback=define"은 "define()" 랩퍼에서 JSON 응답을 감싸는 API를 말합니다.
 ```javascript
 require(["http://example.com/api/data.json?callback=define"],
     function (data) {
@@ -454,11 +460,19 @@ require(["http://example.com/api/data.json?callback=define"],
 ```
 This use of JSONP should be limited to JSONP services for initial application setup. If the JSONP service times out, it means other modules you define via define() may not get executed, so the error handling is not robust.
 
+어플리케이션 초기 설정에서 JSONP 서비스를 제한합니다. 만약 JSONP 서비스가 타임 아웃이 되면, define()을 통해서 정의한 다른 모듈들이 실행할 수 없습니다. 그래서 오류 처리를 할 수 없습니다.
+
 **Only JSONP return values that are JSON objects are supported.** A JSONP response that is an array, a string or a number will not work.
+
+**JSONP로 반환되는 값은 오직 JSON 객체만 지원합니다.** 배열이나 문자열이나 숫자인 JSONP 응답은 작동하지 않습니다.
 
 This functionality should not be used for long-polling JSONP connections -- APIs that deal with real time streaming. Those kinds of APIs should do more script cleanup after receiving each response, and RequireJS will only fetch a JSONP URL once -- subsequent uses of the same URL as a dependency in a require() or define() call will get a cached value.
 
+이 기능은 long-polling JSONP 연결에서는 사용하지 않습니다. long-polling JSONP는 실시간 스트리밍을 다루는 API입니다. 이런 종류의 API는 각각의 응답을 받은 후 많은 script를 정리해야하고, RequireJS는 한번만 JSONP URL을 가져옵니다. 이후에 require()나 define() 호출에서 디펜던시로써 같은 URL을 사용하면 캐시 된 값을 얻을 것입니다.
+
 Errors in loading a JSONP service are normally surfaced via timeouts for the service, since script tag loading does not give much detail into network problems. To detect errors, you can override requirejs.onError() to get errors. There is more information in the Handling Errors section.
+
+JSONP 서비스를 로드할 때 생긴 에러는 보통 서비스에 대한 타임 아웃을 통해서 나타납니다. 로딩중인 script 태그는 네트워크 문제에 대한 세부사항을 주지 않습니다. 에러를 찾기 위해서, requirejs.onError()를 override할 수 있습니다. 에러 핸들링 섹션에서 더 많은 정보가 있습니다.
 
 <a name="Undefining_a_Module">
 ### Undefining a Module(모듈 정의하지 않기)
