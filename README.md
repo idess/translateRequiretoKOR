@@ -39,9 +39,12 @@ REQUIREJS API
 
 RequireJS takes a different approach to script loading than traditional &lt;script&gt; tags. While it can also run fast and optimize well, the primary goal is to encourage modular code. As part of that, it encourages using **module IDs** instead of URLs for script tags.
 
-RequireJS는 전형적인 &lt;script&gt; 태그보다 script를 읽는 또 다른 접근법이다. 빠르고 최적화되게 실행할 수 있자만, 기본 목표는 모듈화된 코드를 만드는 것이다. 그 일환으로, script 태그를 위해 URL 대신에 **모듈 ID**를 사용하는 것을 권장한다.
+
+RequireJS는 전통적인 &lt;script&gt; 태그를 사용한 스크립트 로딩 방법과 다른 접근 방법을 취하고 있습니다. 이 방법은 빠르게 동작하고, 잘 최적화될 수 있는 동시에, 코드의 모듈화를 증진시키는 것을 목표로 합니다. 그 일부를 보여주는 것이 스크립트 태그에 대해 URL을 사용하는 대신에 **모듈ID**를 사용하는 것을 권장한다.
 
 RequireJS loads all code relative to a baseUrl. The baseUrl is normally set to the same directory as the script used in a data-main attribute for the top level script to load for a page. The data-main attribute is a special attribute that require.js will check to start script loading. This example will end up with a baseUrl of **scripts**:
+
+RequireJS는 baseUrl에 포함된 모든 코드를 불러옵니다. baseUrl은 일반적으로 한 페이지에 로딩되는 최상위 스크립트의 data-main 어트리뷰트에서 쓰이는 스크립트와 같은 디렉토리로 설정됩니다. data-main 어트리뷰트는 require.js가 스크립트 로딩을 시작할 지 확인하는 특별한 어트리뷰트입니다. 다음 예시는 스크립트의 baseUrl을 가지고 있습니다.
 
 ```html
 <!--This sets the baseUrl to the "scripts" directory, and
