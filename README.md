@@ -609,7 +609,11 @@ bundles 설정은 빌드를 실행한 후에 빌드 타켓이 존재하는 모�
 
 **shim**: Configure the dependencies, exports, and custom initialization for older, traditional "browser globals" scripts that do not use define() to declare the dependencies and set a module value.
 
+**shim** : 디펜던시들과 exports, 그리고 디펜던시를 선언을 위해 define()을 사용하지 않는 "브라우저 전역" 스크립트들의 커스텀 초기화들을 설정하고 모듈값을 설정합니다.
+
 Here is an example. It requires RequireJS 2.1.0+, and assumes backbone.js, underscore.js and jquery.js have been installed in the baseUrl directory. If not, then you may need to set a paths config for them:
+
+아래 예제가 있습니다. 이것은 RequireJS 2.1.0+ 이상의 문법이며, backbone.js와 underscore.js 그리고 jquery.js가 baseUrl 디렉토리 안에 있다고 가정합니다. 그렇지 않은 경우라면 이를 위해 paths 설정을 할 필요가 있을 것입니다:
 ```javascript
 requirejs.config({
     //Remember: only use shim config for non-AMD scripts,
@@ -620,11 +624,11 @@ requirejs.config({
     //for those cases.
     shim: {
         'backbone': {
-            //These script dependencies should be loaded before loading
-            //backbone.js
+            //These script dependencies should be loaded before loading backbone.js
+            //이 스크립트들의 디펜던시들은 backbone.js가 로딩되기 전에 로딩되어야 합니다.
             deps: ['underscore', 'jquery'],
-            //Once loaded, use the global 'Backbone' as the
-            //module value.
+            //Once loaded, use the global 'Backbone' as the module value.
+            ///한 번 로딩이되면 전역 모듈값으로 'Backbone'을 사용합니다.
             exports: 'Backbone'
         },
         'underscore': {
@@ -645,6 +649,14 @@ requirejs.config({
                 //Note: jQuery registers as an AMD module via define(),
                 //so this will not work for jQuery. See notes section
                 //below for an approach for jQuery.
+                //noConflict 를 지원하는 라이브러리들에 대해 이를 호출하거나
+                //다른 cleanup 작업을 할 수 있는 함수를 사용하는 것이 허용됩니다.
+                //그렇지만, 이러한 라이브러리를 위한 플러그인은 여전히 전역이
+                //되려고 할 것 입니다. 만약 이 함수가 값을 반환한다면, "exports"
+                //문자열을 통해서 발견한 객체 대신에, 이것이 모듈의 exports 값으로
+                //사용될 것 입니다.
+                //Note : jQurey는 define()을 통해 AMD 모듈로 등록되었다면, 아래의
+                //jQuery에 대한 접근 섹션을 참조하세요.        
                 return this.Foo.noConflict();
             }
         }
@@ -656,10 +668,17 @@ requirejs.config({
 //the shim config to properly load 'backbone' and give a local
 //reference to this module. The global Backbone will still exist on
 //the page too.
+//그리고 나서 분리된 파일보다 늦게, 'MyModel.js"부르는 모듈이 정의되면
+//'backbone'을 디펜던시로 명시합니다.  RequireJS는 shim 설정을
+//적절하게 'backbone'을 불러와 모듈 지역 참조에 넘겨주기 위해 사용합니다.
+//전역 backbone 역시 여전히 페이지에 남아있습니다.
 define(['backbone'], function (Backbone) {
   return Backbone.Model.extend({});
 });
 ```
+**기억하세요**
+**shim 설정은 non-AMD 스크립트에 대해서만 사용하며 스크립트들은 define() 호출을 미리하지 않았어야 합니다. 만약 AMD 스크립트들에 대해 사용한다면 shim설정은 정상적으로 동작하지 않을 수도 있습니다. 특히 exports와 init 설정이 동작하지 않으며 deps 설정이 꼬이게 될 것 입니다.**
+
 In RequireJS 2.0.*, the "exports" property in the shim config could have been a function instead of a string. In that case, it functioned the same as the "init" property as shown above. The "init" pattern is used in RequireJS 2.1.0+ so a string value for exports can be used for enforceDefine, but then allow functional work once the library is known to have loaded.
 
 For "modules" that are just jQuery or Backbone plugins that do not need to export any module value, the shim config can just be an array of dependencies:
