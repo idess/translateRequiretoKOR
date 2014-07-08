@@ -62,15 +62,17 @@ There may be times when you do want to reference a script directly and not confo
 In general though, it is best to use the baseUrl and "paths" config to set paths for module IDs. By doing so, it gives you more flexibility in renaming and configuring the paths to different locations for optimization builds.
 
 Similarly, to avoid a bunch of configuration, it is best to avoid deep folder hierarchies for scripts, and instead either keep all the scripts in baseUrl, or if you want to separate your library/vendor-supplied code from your app code, use a directory layout like this:
-* www/
- * index.html
- * js/
-  * app/
-   * sub.js
-  * lib/
-   * jquery.js
-   * canvas.js
-  * app.js
+```
+www/
+	index.html
+	js/
+		app/
+			sub.js
+		lib/
+			jquery.js
+			canvas.js
+		app.js
+```
 
 in index.html:
 ```html
@@ -579,11 +581,13 @@ requirejs.config({
 });
 ```
 If the modules are laid out on disk like this:
-* foo1.0.js
-* foo1.2.js
-* some/
- * newmodule.js
- * oldmodule.js
+```
+foo1.0.js
+foo1.2.js
+some/
+	newmodule.js
+	oldmodule.js
+```
 
 When 'some/newmodule' does 'require('foo')' it will get the foo1.2.js file, and when 'some/oldmodule' does 'require('foo')' it will get the foo1.0.js file.
 
