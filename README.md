@@ -1,8 +1,9 @@
 REQUIREJS API
 =====================
 
-[http://pebf.tistory.com/77](http://pebf.tistory.com/77) 번역 사용함.
-이해를 돕기위해 약간의 의역이 존재합니다.
+[http://pebf.tistory.com/77](http://pebf.tistory.com/77) 번역을 사용했습니다.
+
+이해를 돕기위해 약간의 의역이 존재합니다. 위 주소에서 가져온 번역을 제외하고는 발번역입니다. 참고하세요.
 
 ##### Table of Contents
 
