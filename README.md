@@ -1195,7 +1195,7 @@ RequireJS supports loader plugins. This is a way to support dependencies that ar
 ## Specify a Text File Dependency
 It is nice to build HTML using regular HTML tags, instead of building up DOM structures in script. However, there is no good way to embed HTML in a JavaScript file. The best that can be done is using a string of HTML, but that can be hard to manage, particularly for multi-line HTML.
 
-RequireJS has a plugin, text.js, that can help with this issue. It will automatically be loaded if the text! prefix is used for a dependency. See the text.js README for more information.
+RequireJS has a plugin, text.js, that can help with this issue. It will automatically be loaded if the text! prefix is used for a dependency. See the [text.js README](https://github.com/requirejs/text) for more information.
 
 <a name="Page_Load_Event_Support_DOM_Ready">
 ## Page Load Event Support/DOM Ready
@@ -1227,7 +1227,7 @@ Once your web app gets to a certain size and popularity, localizing the strings 
 
 RequireJS allows you to set up a basic module that has localized information without forcing you to provide all locale-specific information up front. It can be added over time, and only strings/values that change between locales can be defined in the locale-specific file.
 
-i18n bundle support is provided by the i18n.js plugin. It is automatically loaded when a module or dependency specifies the i18n! prefix (more info below). Download the plugin and put it in the same directory as your app's main JS file.
+i18n bundle support is provided by the i18n.js plugin. It is automatically loaded when a module or dependency specifies the i18n! prefix (more info below). [Download the plugin](http://requirejs.org/docs/download.html#i18n) and put it in the same directory as your app's main JS file.
 
 To define a bundle, put it in a directory called "nls" -- the i18n! plugin assumes a module name with "nls" in it indicates an i18n bundle. The "nls" marker in the name tells the i18n plugin where to expect the locale directories (they should be immediate children of the nls directory). If you wanted to provide a bundle of color names in your "my" set of modules, create the directory structure like so:
 * my/nls/colors.js
