@@ -39,7 +39,7 @@ REQUIREJS API
 
 RequireJS takes a different approach to script loading than traditional &lt;script&gt; tags. While it can also run fast and optimize well, the primary goal is to encourage modular code. As part of that, it encourages using **module IDs** instead of URLs for script tags.
 
-RequireJS는 전형적인 &lt;script&gt; 태그보다 script를 읽는 또 다른 접근법이다. 빠르고 최적화되게 실행할 수 있자만, 기본 목표는 모듈화된 코드를 만드는 것이다. 그 일환으로, script 태그를 위해 URL 대신에 **module ID**를 사용하는 것을 권장한다.
+RequireJS는 전형적인 &lt;script&gt; 태그보다 script를 읽는 또 다른 접근법이다. 빠르고 최적화되게 실행할 수 있자만, 기본 목표는 모듈화된 코드를 만드는 것이다. 그 일환으로, script 태그를 위해 URL 대신에 **모듈 ID**를 사용하는 것을 권장한다.
 
 RequireJS loads all code relative to a baseUrl. The baseUrl is normally set to the same directory as the script used in a data-main attribute for the top level script to load for a page. The data-main attribute is a special attribute that require.js will check to start script loading. This example will end up with a baseUrl of **scripts**:
 
@@ -386,6 +386,8 @@ In the future, this code may be pulled into the require/ directory as an optiona
 <a name="Configuration_Options">
 # CONFIGURATION OPTIONS
 When using require() in the top-level HTML page (or top-level script file that does not define a module), a configuration object can be passed as the first option:
+
+상위 HTML 페이지 혹은 모듈로 정의하지 않고 스크립트 파일의 상위에서 require()를 사용하면, 설정 객체는 첫번째 옵션으로 전달될 수 있다.
 ```html
 <script src="scripts/require.js"></script>
 <script>
@@ -408,7 +410,10 @@ When using require() in the top-level HTML page (or top-level script file that d
 ```
 You may also call require.config from your data-main Entry Point, but be aware that the data-main script is loaded asynchronously. Avoid other entry point scripts which wrongly assume that data-main and its require.config will always execute prior to their script loading.
 
+당신은 또한 data-main 으로부터 require.config를 호출할 수도 있지만, data-main 스크립트는 비동기 방식으로 로드된다는 것을 알고 있다. 이것은 data-main과 require.config가 항상 다른 스크립트 로딩보다 우선 실행되지 않기 때문에 다른 entry point 스크립트를 피해야 한다.
+
 Also, you can define the config object as the global variable require before require.js is loaded, and have the values applied automatically. This example specifies some dependencies to load as soon as require.js defines require():
+또한, 당신은 require.js가 로드되기전에 전역변수 require로 config object를 정의할 수 있고, 자동으로 설정값들이 적용된다. 이 예제는 require.js가 require()를 정의하자마자 dependency가 로드되는 것을 보여준다.
 ```html
 <script>
     var require = {
@@ -424,16 +429,25 @@ Also, you can define the config object as the global variable require before req
 <script src="scripts/require.js"></script>
 ```
 **Note**: It is best to use var require = {} and do not use window.require = {}, it will not behave correctly in IE.
+**주의사항**: require={}로 정의하고 window.require={}로 정의하면 안된다. 이것은 IE에서 올바르게 동작하지 않는다.
 
 There are some patterns for separating the config from main module loading.
+main 모듈 모드로 부터 설정을 분리할 수 있는 몇 가지 패턴이 있다.
 
 Supported configuration options:
+제공되는 설정 옵션:
 
 **baseUrl**: the root path to use for all module lookups. So in the above example, "my/module"'s script tag will have a src="/another/path/my/module.js". baseUrl is **not** used when loading plain .js files (indicated by a dependency string starting with a slash, has a protocol, or ends in .js), those strings are used as-is, so a.js and b.js will be loaded from the same directory as the HTML page that contains the above snippet.
 
+**baseUrl**: 모든 모듈을 찾기 위해 사용하는 root 경로. 그래서 위 예제에서 "my/module"의 script 태그는 src="/anohter/path/my/module.js"를 가질 것이다. baseUrl은 .js 확장자가 붙어 있을 때는 사용되지 않는다. 이 문자열은 있는 그대로 사용한다. 그래서 a.js와 b.js는 위 소스가 포함되어 있는 HTML 페이지와 같은 directory에서 읽혀질 것이다.
+
 If no baseUrl is explicitly set in the configuration, the default value will be the location of the HTML page that loads require.js. If a **data-main** attribute is used, that path will become the baseUrl.
 
+만약 baseUrl이 명시적으로 설정에 있지 않으면 기본값은 require.js가 로드되는 HTML 페이지의 directory가 된다. 만약 **data-main** 속성을 사용하면, 그 경로가 baseUrl이 된다.
+
 The baseUrl can be a URL on a different domain as the page that will load require.js. RequireJS script loading works across domains. The only restriction is on text content loaded by text! plugins: those paths should be on the same domain as the page, at least during development. The optimization tool will inline text! plugin resources so after using the optimization tool, you can use resources that reference text! plugin resources from another domain.
+
+baseUrl은 require.js가 로딩되는 페이지와는 다른 domain으로 URL이 될 수 있다. RequireJS 스크립트 로딩은 domain을 통해서 작동한다.
 
 **paths**: path mappings for module names not found directly under baseUrl. The path settings are assumed to be relative to baseUrl, unless the paths setting starts with a "/" or has a URL protocol in it ("like http:"). Using the above sample config, "some/module"'s script tag will be src="/another/path/some/v1.0/module.js".
 
