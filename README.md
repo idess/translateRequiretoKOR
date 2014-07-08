@@ -8,20 +8,20 @@ REQUIREJS API
 
 1. [사용법](#Usage)  
  1. [자바스크립트 파일 로딩](#Load_JavaScript_Files)  
- 1. [data-main Entry Point](#data-main_Entry_Point)  
- 1. [Define a Module](#Define_a_Module)  
-  1. [Simple Name/Value Pairs](#Simple_Name_Value_Pairs)  
-  1. [Definition Functions](#Definition_Functions)  
-  1. [Definition Functions with Dependencies](#Definition_Functions_with_Dependencies)  
-  1. [Define a Module as a Function](#Define_a_Module_as_a_Function)  
-  1. [Define a Module with Simplified CommonJS Wrapper](#Define_a_Module_with_Simplified_CommonJS_Wrapper)  
-  1. [Define a Module with a name](#Define_a_Module_with_a_name)  
-  1. [Other Module Notes](#Other_Module_Notes)  
-  1. [Circular Dependencies](#Circular_Dependencies)  
-  1. [Specify a JSONP Service Dependency](#Specify_a_JSONP_Service_Dependency)  
-  1. [Undefining a Module](#Undefining_a_Module)  
+ 1. [data-main 진입점](#data-main_Entry_Point)  
+ 1. [모듈 정의하기](#Define_a_Module)  
+  1. [단순한 Name/Value 쌍](#Simple_Name_Value_Pairs)  
+  1. [함수 정의](#Definition_Functions)  
+  1. [디펜던시가 있는 함수 정의](#Definition_Functions_with_Dependencies)  
+  1. [모듈을 함수로 정의하기](#Define_a_Module_as_a_Function)  
+  1. [모듈을 단순화된 CommonJS 래퍼로 정의하기](#Define_a_Module_with_Simplified_CommonJS_Wrapper)  
+  1. [모듈을 이름으로 정의하기](#Define_a_Module_with_a_name)  
+  1. [모듈 관련 기타사항](#Other_Module_Notes)  
+  1. [순환 디펜던시](#Circular_Dependencies)  
+  1. [JSONP 서비스 디펜던시 작성하기](#Specify_a_JSONP_Service_Dependency)  
+  1. [모듈 정의하지 않기](#Undefining_a_Module)  
 1. [Mechanics](#Mechanics)  
-1. [Configuration Options](#Configuration_Options)  
+1. [설정 옵션](#Configuration_Options)  
 1. [Advanced Usage](#Advanced_Usage)  
  1. [Loading Modules from Packages](#Loading_Modules_from_Packages)  
  1. [Multiversion Support](#Multiversion_Support)  
@@ -681,7 +681,11 @@ define(['backbone'], function (Backbone) {
 
 In RequireJS 2.0.*, the "exports" property in the shim config could have been a function instead of a string. In that case, it functioned the same as the "init" property as shown above. The "init" pattern is used in RequireJS 2.1.0+ so a string value for exports can be used for enforceDefine, but then allow functional work once the library is known to have loaded.
 
+RequireJS 2.0.* 버전에서 shim 설정은 문자열 대신에 함수가 될 수도 있습니다. 이런 경우에 위에 보이는 "init" 프로퍼티와 같이 기능합니다. "init" 패턴은 RequireJS 2.1.0+ 버전에서 사용됩니다. 이를 통해 exports에 관한 문자열값은 enforceDefine에 사용될 수 있습니다. 그렇지만 함수적인 작업은 라이브러리가 로딩된 것을 알 수 있을 때 한번만 가능합니다. 
+
 For "modules" that are just jQuery or Backbone plugins that do not need to export any module value, the shim config can just be an array of dependencies:
+
+jQuery와 Backbone 플러그인들처럼 모듈값을 export 할 필요가 없는 모듈들이라면 shim 설정은 디펜던시들의 배열 형태일 수 있습니다:
 ```javascript
 requirejs.config({
     shim: {
@@ -692,6 +696,8 @@ requirejs.config({
 });
 ```
 Note however if you want to get 404 load detection in IE so that you can use paths fallbacks or errbacks, then a string exports value should be given so the loader can check if the scripts actually loaded (a return from init is **not** used for enforceDefine checking):
+
+만약 IE에서 404 로드를 감지하고 싶다면 paths fallback 또는 errback을 사용하고, 실제로 스크립트가 로딩됐는지 확인할 수 있도록 문자열 exports 값이 loader에 주어져야 합니다(**init 에서 반환되는 값은 enforceDefine 체크에 쓰이지 않습니다.**)
 ```javascript
 requirejs.config({
     shim: {
@@ -711,25 +717,47 @@ requirejs.config({
 });
 ```
 **Important notes for "shim" config:**
+
+**"shim" 설정에 있어서 주목해야할 부분들:**
+
 * The shim config only sets up code relationships. To load modules that are part of or use shim config, a normal require/define call is needed. Setting shim by itself does not trigger code to load.
+* shim 설정은 코드 관계만을 설정해야합니다. shim 설정의 일부인 모듈을 불러오거나 shim 설정을 사용할 때는 일반적인 require/define 호출이 필요합니다. shim 그 자체를 코드를 불러오는 트리거로 사용하지 마십시오. 
 * Only use other "shim" modules as dependencies for shimmed scripts, or AMD libraries that have no dependencies and call define() after they also create a global (like jQuery or lodash). Otherwise, if you use an AMD module as a dependency for a shim config module, after a build, that AMD module may not be evaluated until after the shimmed code in the build executes, and an error will occur. The ultimate fix is to upgrade all the shimmed code to have optional AMD define() calls.
+* shim된 스크립트에 대한 디펜던시로서만 다른 "shim" 모듈을 사용하십시오. 또는 디펜던시가 없으면서 전역을 생성을 한 후에 define()을 호출하는 AMD 라이브러리(like jQurey 또는 lodash)의 경우에도 사용할 수 있습니다. 반면에 AMD 모듈을 shim 설정 모듈에 대한 디펜던시로 사용한다면 AMD 모듈은 빌드가 실행될 때 shim된 코드가 빌드될 때까지 인식되지 않을 것이며 에러가 발생될 것 입니다. 궁극의 수정은 모든 shim된 코드를 부가적인 AMD define() 호출을 하도록 업그레이드 하는 것입니다.
 * If it is not possible to upgrade the shimmed code to use AMD define() calls, as of RequireJS 2.1.11, the optimizer has a wrapShim build option that will try to automatically wrap the shimmed code in a define() for a build. This changes the scope of shimmed dependencies, so it is not guaranteed to always work, but, for example, for shimmed dependencies that depend on an AMD version of Backbone, it can be helpful.
+* shim된 코드를 AMD define() 호출을 하도록 업그레이드하는 것이 불가능하다면  RequireJS 2.1.11 버전의 optimizer는 wrapShim build option을 가지고 있습니다. 이것은 빌드 시에 자동적으로 shim된 코드를 define()으로 감싸주는 작업을 합니다. 이것은 shim된 디펜던시의 스코프를 변경시키며, 그로 인해 항상 정상적으로 동작할 것이라는 보장을 할 수 없게 됩니다. 그렇지만 예를 들어 shim된 디펜던시가  Backbone의 AMD 버전에 의존하고 있다면 이것은 도움이 될 수 있습니다. 
 * The init function will **not** be called for AMD modules. For example, you cannot use a shim init function to call jQuery's noConflict. See Mapping Modules to use noConflict for an alternate approach to jQuery.
+* init 함수는 AMD 모듈에 대해 호출되지 않습니다. 예를 들어 shim init 함수는 jQuery의 noConflict를 호출할 수 없습니다. jQuery에 대한 접근을 위해 noConflict를 사용하기 위해 모듈을 맵핑하기를 살펴보십시오.
 * Shim config is not supported when running AMD modules in node via RequireJS (it works for optimizer use though). Depending on the module being shimmed, it may fail in Node because Node does not have the same global environment as browsers. As of RequireJS 2.1.7, it will warn you in the console that shim config is not supported, and it may or may not work. If you wish to suppress that message, you can pass requirejs.config({ suppress: { nodeShim: true }});.
+* shim 설정은 node상의 RequireJS에서 AMD 모듈을 실행할 때에는 지원되지 않습니다. (이는 최적화 도구 사용을 위해 동작합니다.) shim된 모듈에 의존성을 가지고 있을 때 Node 안에서는 fail이 발생할 수 있습니다. Node는 브라우저에서와 같은 전역 환경을 제공하지 않기 때문입니다. RequireJS 2.1.7의 경우에는 console에서 shim 설정이 동작할 수도 있고 그렇지 않을 수도 있다는 경고를 줄 것 입니다. 만약 이 메시지를 숨기고 싶다면 requirejs.config({surpress : {nodeShim : true }});
 
 **Important optimizer notes for "shim" config:**
+
+**"sihm" 설정을 위한 최적화도구의 중요한 부분들:**
 * You should use the mainConfigFile build option to specify the file where to find the shim config. Otherwise the optimizer will not know of the shim config. The other option is to duplicate the shim config in the build profile.
+* 파일을 shim 설정 어디에서 찾을 것인지 명시하기 위해 mainConfigFile 빌드 옵션을 사용해야만 합니다. 그렇지 않으면 optimizer는 shim 설정을 알 수가 없습니다. 다른 옵션은 빌드 프로파일 안의 shim 설정과 중복하게 됩니다.
 * Do not mix CDN loading with shim config in a build. Example scenario: you load jQuery from the CDN but use the shim config to load something like the stock version of Backbone that depends on jQuery. When you do the build, be sure to inline jQuery in the built file and do not load it from the CDN. Otherwise, Backbone will be inlined in the built file and it will execute before the CDN-loaded jQuery will load. This is because the shim config just delays loading of the files until dependencies are loaded, but does not do any auto-wrapping of define. After a build, the dependencies are already inlined, the shim config cannot delay execution of the non-define()'d code until later. define()'d modules do work with CDN loaded code after a build because they properly wrap their source in define factory function that will not execute until dependencies are loaded. So the lesson: shim config is a stop-gap measure for non-modular code, legacy code. define()'d modules are better.
+* 빌드 시에 CDN과 shim 설정을 섞지 마십시오. 예제 시나리오 : 당신은 jQuery를 CDN으로 부터 로딩합니다. 그렇지만 jQuery에 의존하는 Backbone의 stock 버전과 같은 파일을 shim 설정을 불러오기 위해 shim 설정을 사용할 수 있습니다. 빌드를 할 때 빌드된 파일에서 jQuery를 확인하고 CDN에서 불러오지 않습니다. 그렇지 않으면 Backbone은 빌드된 파일에서 inline하게 될 것이며 이것은 CDN에서 불러온 jQuery가 로딩되기 전에 실행될 것입니다. 이것은 shim 설정이 모든 디펜던시가 로딩될 때까지 파일의 로딩을 딜레이시키기고 다른 define 자동 래핑을 하지 않았기 때문입니다. 빌드 후에 디펜던시는 이미 inline되었고, shim 설정은 define()되지 않은 코드를 이후까지 딜레이 시키지 못합니다. 빌드 후에 define()된 모듈은 CDN으로 로딩된 코드와 작업을 하게 됩니다. 그것들은 적절하게 그들의 소스를 디펜던시가 로딩될 때까지 실행되지 않는 define 팩토리 함수로 래핑해주었기 때문입니다. 그렇다면 여기서 배울 수 있는 점은 무엇일까요 : shim 설정은 모듈화되지않은 코드, 레거시 코드에 대한 stop-gap measure 입니다. define()`된 모듈을 사용하는 것이 더 낫습니다. 
 * For local, multi-file builds, the above CDN advice also applies. For any shimmed script, its dependencies **must** be loaded before the shimmed script executes. This means either building its dependencies directly in the buid layer that includes the shimmed script, or loading its dependencies with a require([], function (){}) call, then doing a nested require([]) call for the build layer that has the shimmed script.
+* local, 복수 파일 빌드, CDN이 지원됩니다. 어떤 shim된 스크립트가 있다면, 그의 디펜던시는 shim된 스크립트 실행전에 로딩되어야만 합니다. 이것은 shim된 스크립트를 포함하는 빌드레이어 안에서 디펜던시를 직접적으로 빌드하거나 또는 이의 디펜던시들을 shim된 스크립트를 가지고 있는 빌드레이어 내에서 require([], function(){}) 호출로 불러온 후에 require([]) 호출을 실행해야합니다.
 * If you are using uglifyjs to minify the code, **do not** set the uglify option toplevel to true, or if using the command line **do not** pass -mt. That option mangles the global names that shim uses to find exports.
+* 만약 당신이 ugilifyjs를 사용해서 코드를 압축한다면, uglify 옵션을 toplevel을 true로 놓지 말거나 커맨드 라인을 사용한다면 -mt를 넘겨주면 안됩니다. 이 옵션은 shim이 exports를 찾기 위해 사용하는 전역 name들을 훼손시킵니다. 
 
 **map**: For the given module prefix, instead of loading the module with the given ID, substitute a different module ID.
 
+**map**: 모듈 prefix가 주어져있을 때, 모듈을 주어진 ID로 부르는 대신에 다른 모듈 ID로 대체하는 것입니다. 
+
 This sort of capability is really important for larger projects which may have two sets of modules that need to use two different versions of 'foo', but they still need to cooperate with each other.
+
+이러한 종류의 기능은 보다 큰 프로젝트를 할 때 매우 중요합니다. 예를 들면 두 개의 다른 버전의 'foo'를 사용할 필요가 있으면서 서로 협력해야하는 두 묶음 모듈을 가지고 있는 프로젝트 같은 곳에서 말입니다.
 
 This is not possible with the context-backed multiversion support. In addition, the paths config is only for setting up root paths for module IDs, not for mapping one module ID to another one.
 
+context-backed multiversion support는 어렵습니다. path설정은 모듈 ID들에 대한 루트 패스 를 설정해줄 뿐입니다. 하나의 모듈ID를 다른 것에 매핑해주는 것은 아닙니다. 
+
 map example:
+
+map의 예제:
 ```javascript
 requirejs.config({
     map: {
@@ -743,6 +771,8 @@ requirejs.config({
 });
 ```
 If the modules are laid out on disk like this:
+
+모듈은 디스크 상에 다음과 같이 위치되어 있습니다:
 ```
 foo1.0.js
 foo1.2.js
@@ -753,9 +783,15 @@ some/
 
 When 'some/newmodule' does 'require('foo')' it will get the foo1.2.js file, and when 'some/oldmodule' does 'require('foo')' it will get the foo1.0.js file.
 
+'some/newmodule'이 'require('foo')'를 하게되면 fool.2.js 파일을 가져온다. 'some/oldmodule'이 'require('foo')'를 하게되면 fool.0.js 파일을 가져올 것이다. 
+
 This feature only works well for scripts that are real AMD modules that call define() and register as anonymous modules. Also, **only use absolute module IDs** for map config. Relative IDs (like '../some/thing') do not work.
 
+이 기능은 오직 스크립트가 define()을 호출하고 익명 모듈을 등록하는 실제 AMD 모듈일 때만 잘 동작합니다. 또한 map 설정에 있어서 **절대 모듈ID만을 사용**합니다. 상대ID('../some/thing'과 같은)는 동작하지 않습니다. 
+
 There is also support for a "*" map value which means "for all modules loaded, use this map config". If there is a more specific map config, that one will take precedence over the star config. Example:
+
+"*" map 값도 지원을 합니다. 이것은 "모든 모듈이 로딩되면, 이 map 설정을 사용하여라" 와 같은 의미가 됩니다. 더 명시적인 map 설정이 있다면, 그것은 "*" 설정에 우선합니다. 예를 들어:
 ```javascript
 requirejs.config({
     map: {
@@ -770,9 +806,15 @@ requirejs.config({
 ```
 Means that for any module except "some/oldmodule", when "foo" is wanted, use "foo1.2" instead. For "some/oldmodule" only, use "foo1.0" when it asks for "foo".
 
+이것은 "some/oldmodule"을 제외한 모든 모듈에 대해 "foo"를 사용하게 되면 "foo1.2"를 사용하라는 의미가 됩니다. 오직 "some/oldmodule" 만이 "foo"를 찾찾게 되면 "foo1.0"을 사용합니다. 
+
 **Note**: when doing builds with map config, the map config needs to be fed to the optimizer, and the build output must still contain a requirejs config call that sets up the map config. The optimizer does not do ID renaming during the build, because some dependency references in a project could depend on runtime variable state. So the optimizer does not invalidate the need for a map config after the build.
 
+**참고**: map 설정으로 빌드를 할 때 map 설정은 optimizer에 들어가야 하며, 산출물 빌드는 map 설정을 준비하는 RequireJS 설정 호출을 반드시 포함하고 있어야 합니다. optimizer는 빌드 동안에 ID명을 변경하지 않습니다. 프로젝트 내의 몇몇 디펜던시 참조가 런타임 변수 상태에 의존할 수 있기 때문입니다. 그렇기 때문에 optimizer는 빌드 후에 map 설정을 필요로 하지 않습니다. 
+
 **config**: There is a common need to pass configuration info to a module. That configuration info is usually known as part of the application, and there needs to be a way to pass that down to a module. In RequireJS, that is done with the **config** option for requirejs.config(). Modules can then read that info by asking for the special dependency "module" and calling **module.config()**. Example:
+
+**config**: 설정정보를 모듈안으로 넘기려는 일반적인 필요성이 있었습니다. 설정 정보는 보통 애플리케이션의 일부로 알려져 있고, 그것들은 모듈 안으로 넘길 방법이 필요했습니다. RequireJS에서는, requirejs.config()의 **config** 옵션을 통해 사용할 수 있습니다. 모듈들은 이 정보를 특정 디펜던시 "모듈"을 요청하고 **module.confing()**를 호출 함으로써 정보를 읽을 수 있게 됩니다. 예제는 다음과 같습니다 : 
 ```javascript
 requirejs.config({
     config: {
@@ -801,6 +843,8 @@ define(['module'], function (module) {
 });
 ```
 For passing config to a package, target the main module in the package, not the package ID:
+
+config를 패키지에 넘겨주게 되면, 패키지ID가 아닌 패키지 안의 메인 모듈을 대상으로 하게됩니다:
 ```javascript
 requirejs.config({
     //Pass an API key for use in the pixie package's
@@ -822,29 +866,53 @@ requirejs.config({
 ```
 **packages**: configures loading modules from CommonJS packages. See the packages topic for more information.
 
+**package**: CommonJS 페키지에서 설정 로딩 모듈입니다. 더 많은 정보를 원하신다면 package topic을 보시기 바랍니다.
+
 **nodeIdCompat**: Node treats module ID example.js and example the same. By default these are two different IDs in RequireJS. If you end up using modules installed from npm, then you may need to set this config value to true to avoid resolution issues.
+
+**nodeIdCompat**: Node는 모듈ID example.js와 example을 같게 처리한다. RequireJS에서는 둘을 다른 것이 됩니다. 만약 npm에서 설치된 모듈을 사용하게 되었다면, 이 설정값을 true로 해서 resolution 이슈를 피하기 바랍니다. 
 
 **waitSeconds**: The number of seconds to wait before giving up on loading a script. Setting it to 0 disables the timeout. The default is 7 seconds.
 
+**waitSeconds**: 스크립트 로딩을 기다리는 시간입니다. 초단위입니다. 타임아웃되지 않도록 이것을 설정할 수 있습니다. 디폴트는 7초입니다.
+
 **context**: A name to give to a loading context. This allows require.js to load multiple versions of modules in a page, as long as each top-level require call specifies a unique context string. To use it correctly, see the Multiversion Support section.
+
+**context**: 로딩 context에 주어지는 이름입니다. 이것은 require.js가 top-level require 호출이 유니크한 context 문자열을 명시해놓는 동안 한 페이지 안에 다양한 버전의 모듈을 로딩하도록 해줍니다. 정확하게 사용하기 위해서 Multiversion Support 섹션을 살펴보기 바랍니다.
 
 **deps**: An array of dependencies to load. Useful when require is defined as a config object before require.js is loaded, and you want to specify dependencies to load as soon as require() is defined. Using deps is just like doing a require([]) call, but done as soon as the loader has processed the configuration. **It does not block** any other require() calls from starting their requests for modules, it is just a way to specify some modules to load asynchronously as part of a config block.
 
+**deps**: 로딩할 디펜던시들의 배열입니다. require가 require.js가 로딩되기 전에 config 객체로 정의될 때 유용합니다. deps는 require([]) 호출과 비슷하게 사용하면 되지만, 로더가 설정을 진행하자마자 실행됩니다. 이것은 모듈들에 대한 요청을 시작하는 다른 require() 호출에 의해 막히는 일이 없으며, 이것은 단지 설정 블락의 부분으로써 비동기적으로 로딩되는 모듈을 명시하는 방법일 뿐입니다.
+
 **callback**: A function to execute after **deps** have been loaded. Useful when require is defined as a config object before require.js is loaded, and you want to specify a function to require after the configuration's **deps** array has been loaded.
+
+**callback**: deps가 로딩된 후에 실행되는 함수입니다. require가 requre.js가 로딩되기 전에 설정 객체로서 정의될 때와 설정의 deps 배열이 로딩된 후에 require될 함수를 명시하고자 할 때 유용합니다.
 
 **enforceDefine**: If set to true, an error will be thrown if a script loads that does not call define() or have a shim exports string value that can be checked. See Catching load failures in IE for more information.
 
+**enforceDefine**: 이것이 true로 설정되면, 스크립트 로딩이 define()을 호출하지 않았거나 shim exports 문자열 값이 체크될 수 있을 때 에러가 던져집니다. Catching load failure in IE를 보시면 더 많은 정보를 얻을 수 있습니다.
+
 **xhtml**: If set to true, document.createElementNS() will be used to create script elements.
 
+**xhtml**: true로 설정되었다면, document.createElementNS()를 통해 스크립트 엘리먼트를 생성할 것입니다.
+
 **urlArgs**: Extra query string arguments appended to URLs that RequireJS uses to fetch resources. Most useful to cache bust when the browser or server is not configured correctly. Example cache bust setting for urlArgs:
+
+**urlArgs**: RequireJS 리소스를 불러오기 위해 사용하는 URL에 추가적인 쿼리 문자열 인자를 덧붙입니다. 브라우저나 서버가 올바르게 설정되지 않았을 때 캐쉬를 날리는 가장 효과적인 방법입니다. urlArgs를 사용해 캐쉬를 날리는 예제는 다음과 같습니다:
 ```javascript
 urlArgs: "bust=" +  (new Date()).getTime()
 ```
 During development it can be useful to use this, however **be sure** to remove it before deploying your code.
 
+**개발하는 동안 이것을 사용하는 것이 유용할 수 있지만, 코드를 deploying 하기 전에는 제거해야합니다.**
+
 **scriptType**: Specify the value for the type="" attribute used for script tags inserted into the document by RequireJS. Default is "text/javascript". To use Firefox's JavaScript 1.8 features, use "text/javascript;version=1.8".
 
+**scriptType**: RequireJS를 사용해서 문서 안에 삽입될 스크립트 태그의 type="" 어트리뷰트의 값을 명시합니다. 디폴트는 "text/javascript" 입니다. 파이어폭스의 Javascript 1.8의 기능을 이용하려면, "text/javascipt;version=1.8"이라고 작성하면 됩니다.
+
 **skipDataMain**: Introduced in RequireJS 2.1.9: If set to true, skips the data-main attribute scanning done to start module loading. Useful if RequireJS is embedded in a utility library that may interact with other RequireJS library on the page, and the embedded version should not do data-main loading.
+
+**skipDataMain**: RequireJS 2.1.9부터 사용가능합니다 : 이것이 true로 설정되어 있다면 data-main 어트리뷰트의 스케닝을 스킵하고 모듈 로딩을 시작합니다. RequireJS가 페이지 상의 RequireJS 라이브러리와 상호작용할 유틸리티 라이브러리 안에 들어있을 때 embeded 버전이 data-main 로딩을 하지 말아야 할 때 유용합니다.
 
 <a name="Advanced_Usage">
 # ADVANCED USAGE
