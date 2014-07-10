@@ -33,7 +33,7 @@ REQUIREJS API
 1. [Loader Plugins](#Loader_Plugins)  
  1. [Specify a Text File Dependency](#Specify_a_Text_File_Dependency)  
  1. [Page Load Event Support/DOM Ready](#Page_Load_Event_Support_DOM_Ready)  
- 1. [Define an I18N Bundle](#Define_an_I18N_Bundle)  
+ 1. [국제화 번들 정의하기](#Define_an_I18N_Bundle)  
 
 <a name="Usage">
 # 사용법
