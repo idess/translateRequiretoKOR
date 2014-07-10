@@ -1223,17 +1223,27 @@ require(['domReady!'], function (doc) {
 **Note**: If the document takes a while to load (maybe it is a very large document, or has HTML script tags loading large JS files that block DOM completion until they are done), using domReady as a loader plugin may result in a RequireJS "timeout" error. If this a problem either increase the waitSeconds configuration, or just use domReady as a module and call domReady() inside the require() callback.
 
 <a name="Define_an_I18N_Bundle">
-## Define an I18N Bundle
+## Define an I18N Bundle(I18N 번들 정의하기)
 Once your web app gets to a certain size and popularity, localizing the strings in the interface and providing other locale-specific information becomes more useful. However, it can be cumbersome to work out a scheme that scales well for supporting multiple locales.
+
+웹 응용 프로그램은 특정 크기와 인기에 도달하면, 인터페이스에서 문자열을 지역화하고 다른 지역별 정보를 제공하는 것이 더 유용하게 됩니다. 그렇지만, 여러 지역을 지원하기 위해 잘 조절하는 구조를 만드는 것은 부담이 될 수 있습니다. 
 
 RequireJS allows you to set up a basic module that has localized information without forcing you to provide all locale-specific information up front. It can be added over time, and only strings/values that change between locales can be defined in the locale-specific file.
 
+RequireJS는 당신이 앞에 모든 지역별 정보를 제공하지 않고 정보를 지역화 한 적이있는 기본 모듈을 설정할 수 있습니다. 그것은 시간이 지나도 추가할 수 있고, 지역간에 변하는 문자열/값을 지역별 파일에 정의할 수 있습니다.
+
 i18n bundle support is provided by the i18n.js plugin. It is automatically loaded when a module or dependency specifies the i18n! prefix (more info below). [Download the plugin](http://requirejs.org/docs/download.html#i18n) and put it in the same directory as your app's main JS file.
 
+i18n 번들 제공은 i18n.js 플러그인에 의해 제공됩니다. 모듈이나 디펜던시가 i18n! 접두사로 지정할 때 자동으로 로딩됩니다. 플러그인을 다운로드하고 앱의 main JS 파일과 같은 디렉토리에 넣어주십시오.
+
 To define a bundle, put it in a directory called "nls" -- the i18n! plugin assumes a module name with "nls" in it indicates an i18n bundle. The "nls" marker in the name tells the i18n plugin where to expect the locale directories (they should be immediate children of the nls directory). If you wanted to provide a bundle of color names in your "my" set of modules, create the directory structure like so:
+
+번들을 정의하기 위해 nls 디렉토리를 생성하십시오. i18n! 플러그인은 i18n 번들이 가리키는 것으로 "nls"로 모듈 이름을 지정합니다. "nls" 이름은 i18n 플러그인이 찾는 로케일 디렉토리입니다(nls 디렉토리 아래 디렉토리에 있어야합니다.). 당신이 모듈의 "my"에서 색 이름의 번들을 제공하기 원한다면, 아래와 같이 디렉토리 구성을 생성해야 합니다:
 * my/nls/colors.js
 
 The contents of that file should look like so:
+
+파일은 아래와 같습니다:
 ```javascript
 //my/nls/colors.js contents:
 define({
@@ -1246,7 +1256,11 @@ define({
 ```
 An object literal with a property of "root" defines this module. That is all you have to do to set the stage for later localization work.
 
+이 모듈은 "root" 속성과 함께 객체 리터럴을 정의하였다. 저것이 당신이 나중에 현지화 작업을 위한 단계에서 설정하는 모든 것입니다.
+
 You can then use the above module in another module, say, in a my/lamps.js file:
+
+당신은 다른 모듈에서 위 모듈을 사용할 수 있습니다:
 ```javascript
 //Contents of my/lamps.js
 define(["i18n!my/nls/colors"], function(colors) {
@@ -1257,7 +1271,11 @@ define(["i18n!my/nls/colors"], function(colors) {
 ```
 The my/lamps module has one property called "testMessage" that uses colors.red to show the localized value for the color red.
 
+my/lamps 모듈은 "testMessage" 라로 불리는 하나의 속성을 가지고 있고 이것은 빨간색을 위한 지역화 값을 보여주기 위해 colors.red를 사용합니다.
+
 Later, when you want to add a specific translation to a file, say for the fr-fr locale, change my/nls/colors to look like so:
+
+나중에, 파일에 특정 번역을 추가하고 싶을 때, fr-fr 지역을 말하자면, my/nls/colors 를 아래와 같이 변경합니다:
 ```javascript
 //Contents of my/nls/colors.js
 define({
@@ -1270,6 +1288,8 @@ define({
 });
 ```
 Then define a file at my/nls/fr-fr/colors.js that has the following contents:
+
+그리고 my/nls/fr-fr/colors.js 파일을 아래와 같이 정의하십시오:
 ```javascript
 //Contents of my/nls/fr-fr/colors.js
 define({
@@ -1279,6 +1299,8 @@ define({
 });
 ```
 RequireJS will use the browser's navigator.language or navigator.userLanguage property to determine what locale values to use for my/nls/colors, so your app does not have to change. If you prefer to set the locale, you can use the module config to pass the locale to the plugin:
+
+RequireJS는 my/nls/colors를 사용하기위한 로케일 값을 결정하기 위해 브라우저의 navigator.language나 navigator.userLanguage 속성을 사용한다. 그리고 애플리케이션의 바꾸지 않는다. 만약 당신이 로케일을 설정하기를 원한다면, 당신은 플러그인에 로케일을 전달하는 모듈 설정을 사용할 수 있습니다:
 ```javascript
 requirejs.config({
     config: {
@@ -1292,9 +1314,15 @@ requirejs.config({
 ```
 **Note** that RequireJS will always use a lowercase version of the locale, to avoid case issues, so all of the directories and files on disk for i18n bundles should use lowercase locales.
 
+**주의사항** RequireJS는 대소문자 이슈를 피하기 위해 로케일 버전을 소문자로 사용합니다. 그래서 i18n을 위한 모든 디렉토리나 파일은 꼭 소문자를 사용해야만 합니다.
+
 RequireJS is also smart enough to pick the right locale bundle, the one that most closely matches the ones provided by my/nls/colors. For instance, if the locale is "en-us", then the "root" bundle will be used. If the locale is "fr-fr-paris" then the "fr-fr" bundle will be used.
 
+RequireJS는 또한 my/nls/colors에서 제공하는 것중에 가장 가까운 것 하나를 선택 할 정도로 똑똑합니다. 예를 들어서 "en-us" 로케일이면 "root" 번들을 사용할 것이다. 만약 "fr-fr-paris" 라면 "fr-fr" 번들을 사용할 것입니다.
+
 RequireJS also combines bundles together, so for instance, if the french bundle was defined like so (omitting a value for red):
+
+또한 RequireJS는 아래와 같이 french 번들이 빨간색이 생략되어 아래와 같이 정의 되어 있을 경우 번들들을 조합합니다.:
 ```javascript
 //Contents of my/nls/fr-fr/colors.js
 define({
@@ -1303,6 +1331,8 @@ define({
 });
 ```
 Then the value for red in "root" will be used. This works for all locale pieces. If all the bundles listed below were defined, then RequireJS will use the values in the following priority order (the one at the top takes the most precedence):
+
+이때 "root"에 있는 red 값이 사용됩니다. 이것은 모든 로케일 조각에서 작동합니다. 만약 아래와 같이 모든 번들이 정의되었다면, RequireJS는 상단에 있는 것을 가장 우선으로 해서 아래의 순서대로 값을 사용할 것입니다.
 * my/nls/fr-fr-paris/colors.js
 * my/nls/fr-fr/colors.js
 * my/nls/fr/colors.js
