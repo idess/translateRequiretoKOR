@@ -1339,6 +1339,8 @@ Then the value for red in "root" will be used. This works for all locale pieces.
 * my/nls/colors.js
 
 If you prefer to not include the root bundle in the top level module, you can define it like a normal locale bundle. In that case, the top level module would look like:
+
+만약 상위 모듈에서 root 번들이 포함되는 것을 원하지 않으면, 기본 로케일 번들처럼 root 번들을 정의할 수 있다. 이 경우, 상위 모듈은 아래와 같다:
 ```javascript
 //my/nls/colors.js contents:
 define({
@@ -1348,6 +1350,7 @@ define({
 });
 ```
 and the root bundle would look like:
+그리고 root 번들은 아래와 같다:
 ```javascript
 //Contents of my/nls/root/colors.js
 define({
