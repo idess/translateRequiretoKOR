@@ -1360,6 +1360,6 @@ define({
 });
 ```
 
-Latest Release: 2.1.14
-Open source: new BSD or MIT licensed
-web design by Andy Chung © 2011-2014
+Latest Release: 2.1.14  
+Open source: new BSD or MIT licensed  
+web design by Andy Chung © 2011-2014  
