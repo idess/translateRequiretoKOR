@@ -36,10 +36,10 @@ REQUIREJS API
   1. [국제화 번들 정의하기](#Define_an_I18N_Bundle)  
 
 <a name="Usage">
-# 사용법
+## 사용법
 
 <a name="Load_JavaScript_Files">
-## 자바스크립트 파일 로딩
+### 자바스크립트 파일 로딩
 
 RequireJS takes a different approach to script loading than traditional &lt;script&gt; tags. While it can also run fast and optimize well, the primary goal is to encourage modular code. As part of that, it encourages using **module IDs** instead of URLs for script tags.
 
@@ -138,7 +138,7 @@ If you do not express the dependencies, you will likely get loading errors since
 만약 디펜던시를 적어주지 않는다면, RequireJS가 스크립트를 비동기적으로 불러올 때 에러가 발생되고 엉망이 될 것 입니다.
 
 <a name="data-main_Entry_Point">
-## data-main Entry Point(data-main 진입점)
+### data-main Entry Point(data-main 진입점)
 The data-main attribute is a special attribute that require.js will check to start script loading:
 
 data-main 어트리뷰트는 RequireJS가 스크립트 로딩을 시작할 때 체크하는 특별한 어트리뷰트입니다:
@@ -178,7 +178,7 @@ require( ['foo'], function( foo ) {
 ```
 
 <a name="Define_a_Module">
-## Define a Module(모듈 정의하기)
+### Define a Module(모듈 정의하기)
 
 A module is different from a traditional script file in that it defines a well-scoped object that avoids polluting the global namespace. It can explicitly list its dependencies and get a handle on those dependencies without needing to refer to global objects, but instead receive the dependencies as arguments to the function that defines the module. Modules in RequireJS are an extension of the Module Pattern, with the benefit of not needing globals to refer to other modules.
 
@@ -197,7 +197,7 @@ There should only be **one** module definition per file on disk. The modules can
 디스크 상의 파일 하나 당 오직 **하나의 모듈만 정의**되어야 합니다. 모듈은 최적화 툴에 의해 최적화된 묶음으로 그루핑될 수 있습니다. 
 
 <a name="Simple_Name_Value_Pairs">
-### Simple Name/Value Pairs(단순한 Name/Value 쌍)
+#### Simple Name/Value Pairs(단순한 Name/Value 쌍)
 
 If the module does not have any dependencies, and it is just a collection of name/value pairs, then just pass an object literal to define():
 
@@ -211,7 +211,7 @@ define({
 ```
 
 <a name="Definition_Functions">
-### Definition Functions(함수 정의)
+#### Definition Functions(함수 정의)
 
 If the module does not have dependencies, but needs to use a function to do some setup work, then define itself, pass a function to define():
 
@@ -229,7 +229,7 @@ define(function () {
 });
 ```
 <a name="Definition_Functions_with_Dependencies">
-### Definition Functions with Dependencies(디펜던시가 있는 함수 정의)
+#### Definition Functions with Dependencies(디펜던시가 있는 함수 정의)
 If the module has dependencies, the first argument should be an array of dependency names, and the second argument should be a definition function. The function will be called to define the module once all dependencies have loaded. The function should return an object that defines the module. The dependencies will be passed to the definition function as function arguments, listed in the same order as the order in the dependency array:
 
 만약 모듈이 디펜던시가 있다면 첫번째 인자는 디펜던시들의 이름의 배열이어야하고, 두번째 인자는 함수 정의여야 합니다. 함수는 모든 디펜던시가 로딩되었을 때 모듈에 대한 define을 호출할 것입니다. 함수는 모듈을 정의한 객체를 반환해야합니다. 디펜던시는 정의된 함수에 함수 인자의 형태로 넘어갈 것이며, 디펜던시 배열의 순서와 같은 순서로 들어갈 것입니다:
@@ -273,7 +273,7 @@ The return object from the function call defines the "my/shirt" module. By defin
 함수 호출을 통해 반환되는 객체는 "my/shirt" 모듈에서 정의합니다. 이런 방법으로 모듈을 정의하게되면, "my/shirt"는 전역 객체 내에 존재하지 않게됩니다.
 
 <a name="Define_a_Module_as_a_Function">
-### Define a Module as a Function(모듈을 함수로 정의하기)
+#### Define a Module as a Function(모듈을 함수로 정의하기)
 Modules do not have to return objects. Any valid return value from a function is allowed. Here is a module that returns a function as its module definition:
 
 모듈은 따로 반환 객체를 가지고 있지 않습니다. 함수의 어떤 유효한 반환값도 허용됩니다. 모듈 정의로써 함수를 반환하는 모듈의 예가 다음에 나와있습니다:
@@ -297,7 +297,7 @@ define(["my/cart", "my/inventory"],
 );
 ```
 <a name="Define_a_Module_with_Simplified_CommonJS_Wrapper">
-#### Define a Module with Simplified CommonJS Wrapper(모듈을 단순화된 CommonJS 래퍼로 정의하기)
+##### Define a Module with Simplified CommonJS Wrapper(모듈을 단순화된 CommonJS 래퍼로 정의하기)
 If you wish to reuse some code that was written in the traditional CommonJS module format it may be difficult to re-work to the array of dependencies used above, and you may prefer to have direct alignment of dependency name to the local variable used for that dependency. You can use the simplified CommonJS wrapper for those cases:
 
 만약 예전의 CommonJS 모듈 형식으로 작성된 코드를 재사용하고 싶을 때, 위에 사용된 디편던시들의 배열의 형태로 재작업하는 것은 어려울 것이며, 아마도 의존성을 위해 디펜던시들의 이름을 지역변수의 형태로 나열하는 것을 선호할 것 입니다. 이러한 경우에 simplified CommonJS wrapper를 사용할 수가 있습니다:
@@ -319,7 +319,7 @@ More information is available on the CommonJS page, and in the in the "Sugar" se
 CommonJS 페이지의 Why AMD 페이지의  "Sugar" 섹션에서 더 많은 정보를 찾아볼 수 있습니다.
 
 <a name="Define_a_Module_with_a_Name">
-### Define a Module with a Name(모듈을 이름으로 정의하기)
+#### Define a Module with a Name(모듈을 이름으로 정의하기)
 You may encounter some define() calls that include a name for the module as the first argument to define():
 
 당신은 define() 호출 시에 define()의 첫번째 인자로 모듈의 이름을 포함되어 있는 것을 보게 될 수도 있습니다:
@@ -337,7 +337,7 @@ These are normally generated by the optimization tool. You can explicitly name m
 이것은 일반적으로 optimizer tool에서 생성되는 형태입니다. 당신은 모듈의 이름을 명확하게 지을 수 있지만, 이것은 모듈의 이동성을 떨어트립니다. -- 만약 당신이 파일을 다른 디렉토리로 옮기게 되면 당신은 이름을 변경해야 합니다. 일반적인 경우에 모듈의 이름을 코딩하는 것은 피하고, 최적화툴로 모듈의 이름을 작성하도록 하는 것이 최선입니다. optimizer tool에서는 브라우저의 로딩 속도를 높이기 위해, 하나 이상의 모듈이 하나의 파일로 합쳐질 수 있도록 이름을 더해주는 것을 필요로합니다. 
 
 <a name="Other_Module_Notes">
-### Other Module Notes(모듈 관련 기타사항)
+#### Other Module Notes(모듈 관련 기타사항)
 **One module per file.**: Only one module should be defined per JavaScript file, given the nature of the module name-to-file-path lookup algorithm. Multiple modules will be grouped into optimized files by the optimization tool, but you should only use the optimization tool to place more than one module in a file.
 
 **파일 하나 당 하나의 모듈** : 자바스크립트 파일 하나당 오직 하나의 모듈을 써야하며, name-to-file-path lookup 알고리즘 유형을 따라야합니다. 복수의 모듈은 최적화 도구에 의해 최적화된 파일로 그루핑될 것이다. 그렇지만 하나의 이상의 모듈을 하나의 파일 안에 넣어야 할 때만 최적화 도구를 사용해야 합니다.
@@ -385,7 +385,7 @@ Note this only works if "module/name" was previously loaded via the async versio
 이 형식은 "module/name"을 require의 비동기 버전을 통해 이미 로드되어있는 경우에만 동작한다는 것을 기억하세요. './module/name'과 같이 상대경로를 사용하는 방식은 define 내부에서만 동작합니다.
 
 <a name="Circular_Dependencies">
-### Circular Dependencies(순환 디펜던시)
+#### Circular Dependencies(순환 디펜던시)
 If you define a circular dependency ("a" needs "b" and "b" needs "a"), then in this case when "b"'s module function is called, it will get an undefined value for "a". "b" can fetch "a" later after modules have been defined by using the require() method (be sure to specify require as a dependency so the right context is used to look up "a"):
 
 만약 당신이 순환 디펜던시를 정의했다면 (a는 b가 필요하고, b는 a가 필요한) 이 경우에 "b" 모듈 함수가 호출된다면, 이것은 "a"에 대해서 undefined 값을 가지게 될 것 입니다. "b"는 "a"를 모듈이 require() 메소드에 의해 정의된 이후에 가져올 수 있습니다. (반드시 require를 디펜던시로 명시해서 올바른 context 내에서 "a"를 찾아야 합니다.):
@@ -438,7 +438,7 @@ define(['a', 'exports'], function(a, exports) {
 ```
 
 <a name="Specify_a_JSONP_Service_Dependency">
-### Specify a JSONP Service Dependency(JSONP 서비스 디펜던시 작성하기)
+#### Specify a JSONP Service Dependency(JSONP 서비스 디펜던시 작성하기)
 JSONP is a way of calling some services in JavaScript. It works across domains and it is an established approach to calling services that just require an HTTP GET via a script tag.
 
 JSONP는 자바스크립트에서 서비스를 호출하는 방법중 하나입니다. 이것은 도메인을 통해서 작동하고, script 태그를 통해서 http get을 요청하는 서비스를 연결하는 방법입니다.
@@ -476,7 +476,7 @@ Errors in loading a JSONP service are normally surfaced via timeouts for the ser
 JSONP 서비스를 로드할 때 생긴 에러는 보통 서비스에 대한 타임 아웃을 통해서 나타납니다. 로딩중인 script 태그는 네트워크 문제에 대한 세부사항을 주지 않습니다. 에러를 찾기 위해서, requirejs.onError()를 override할 수 있습니다. 에러 핸들링 섹션에서 더 많은 정보가 있습니다.
 
 <a name="Undefining_a_Module">
-### Undefining a Module(모듈 정의하지 않기)
+#### Undefining a Module(모듈 정의하지 않기)
 There is a global function, **requirejs.undef()**, that allows undefining a module. It will reset the loader's internal state to forget about the previous definition of the module.
 
 전역함수인 requirejs.undef()는 정의되지 않는 모듈을 허용하게 한다. 이 함수는 모듈의 이전의 정의를 잊도록 로더의 내부 상태를 리셋합니다.
@@ -490,7 +490,7 @@ If you want to do more sophisticated dependency graph analysis for undefining wo
 만약 당신이 정의되지 않은 작업에 대해 정교한 디펜던시 그래프 분석을 하길 원한다면 semi-private onResourceLoadAPI가 유용할 것 입니다.
 
 <a name="Mechanics">
-# MECHANICS
+## MECHANICS
 RequireJS loads each dependency as a script tag, using head.appendChild().
 
 RequireJS는 디펜던시를 head.appendChild()를 통해 스크립트 태그 형태로 불러들입니다.
@@ -508,7 +508,7 @@ In the future, this code may be pulled into the require/ directory as an optiona
 향후에, 이 코드는 부가적인 모듈로서 require/ 디렉토리로 가져올 것입니다. 이를 통해 당신의 환경에 이것을 불러와 호스트 환경에 기초한 올바른 로딩 방법을 사용할 수 있게될 것 입니다.
 
 <a name="Configuration_Options">
-# CONFIGURATION OPTIONS(설정 옵션)
+## CONFIGURATION OPTIONS(설정 옵션)
 When using require() in the top-level HTML page (or top-level script file that does not define a module), a configuration object can be passed as the first option:
 
 탑-레벨 HTML 페이지(또는 모듈을 정의하지 않는 탑-레벨스크립트 파일)에서 require()를 사용할 때, 설정 객체는 첫번째 옵션으로 넘겨지게 됩니다. 
@@ -930,9 +930,9 @@ During development it can be useful to use this, however **be sure** to remove i
 **skipDataMain**: RequireJS 2.1.9부터 사용가능합니다 : 이것이 true로 설정되어 있다면 data-main 어트리뷰트의 스케닝을 스킵하고 모듈 로딩을 시작합니다. RequireJS가 페이지 상의 RequireJS 라이브러리와 상호작용할 유틸리티 라이브러리 안에 들어있을 때 embeded 버전이 data-main 로딩을 하지 말아야 할 때 유용합니다.
 
 <a name="Advanced_Usage">
-# ADVANCED USAGE
+## ADVANCED USAGE
 <a name="Loading_Modules_from_Packages">
-## Loading Modules from Packages
+### Loading Modules from Packages
 RequireJS supports loading modules that are in a CommonJS Packages directory structure, but some additional configuration needs to be specified for it to work. Specifically, there is support for the following CommonJS Packages features:
 * A package can be associated with a module name/prefix.
 * The package config can specify the following properties for a specific package:
@@ -1012,7 +1012,7 @@ require.config({
 To avoid verbosity, it is strongly suggested to always use packages that use "main" convention in their structure.
 
 <a name="Multiversion_Support">
-## Multiversion Support
+### Multiversion Support
 As mentioned in Configuration Options, multiple versions of a module can be loaded in a page by using different "context" configuration options. require.config() returns a require function that will use the context configuration. Here is an example that loads two different versions of the alpha and beta modules (this example is taken from one of the test files):
 ```html
 <script src="../require.js"></script>
@@ -1061,11 +1061,11 @@ function(require,   alpha,   beta) {
 Note that "require" is specified as a dependency for the module. This allows the require() function that is passed to the function callback to use the right context to load the modules correctly for multiversion support. If "require" is not specified as a dependency, then there will likely be an error.
 
 <a name="Loading_Code_After_Page_Load">
-## Loading Code After Page Load
+### Loading Code After Page Load
 The example above in the Multiversion Support section shows how code can later be loaded by nested require() calls.
 
 <a name="Web_Worker_Support">
-## Web Worker Support
+### Web Worker Support
 As of release 0.12, RequireJS can be run inside a Web Worker. Just use importScripts() inside a web worker to load require.js (or the JS file that contains the require() definition), then call require.
 
 You will likely need to set the **baseUrl** configuration option to make sure require() can find the scripts to load.
@@ -1073,11 +1073,11 @@ You will likely need to set the **baseUrl** configuration option to make sure re
 You can see an example of its use by looking at one of the files used in the unit test.
 
 <a name="Rhino_Support">
-## Rhino Support
+### Rhino Support
 RequireJS can be used in Rhino via the r.js adapter. See the r.js README for more information.
 
 <a name="Handling_Errors">
-## Handling Errors
+### Handling Errors
 The general class of errors are 404s for scripts (not found), network timeouts or errors in the scripts that are loaded. RequireJS has a few tools to deal with them: require-specific errbacks, a "paths" array config, and a global requirejs.onError.
 
 The error object passed to errbacks and the global requirejs.onError function will usually contain two custom properties:
@@ -1087,7 +1087,7 @@ The error object passed to errbacks and the global requirejs.onError function wi
 If you get an error with a requireModules, it probably means other modules that depend on the modules in that requireModules array are not defined.
 
 <a name="Catching_load_failures_in_IE">
-### Catching load failures in IE
+#### Catching load failures in IE
 Internet Explorer has a set of problems that make it difficult to detect load failures for errbacks/paths fallbacks:
 * script.onerror does not work in IE 6-8. There is no way to know if loading a script generates a 404, worse, it triggers the onreadystatechange with a complete state even in a 404 case.
 * script.onerror does work in IE 9+, but it has a bug where it does not fire script.onload event handlers right after execution of script, so it cannot support the standard method of allowing anonymous AMD modules. So script.onreadystatechange is still used. However, onreadystatechange fires with a complete state before the script.onerror function fires.
@@ -1103,7 +1103,7 @@ So if you want to support Internet Explorer, catch load errors, and have modular
 If you then also use almond to build your code without require.js, be sure to use the insertRequire build setting to insert a require call for the main module -- that serves the same purpose of the initial require() call that data-main does.
 
 <a name="require_errbacks">
-### require([]) errbacks
+#### require([]) errbacks
 Errbacks, when used with requirejs.undef(), will allow you to detect if a module fails to load, undefine that module, reset the config to a another location, then try again.
 
 A common use case for this is to use a CDN-hosted version of a library, but if that fails, switch to loading the file locally:
@@ -1151,7 +1151,7 @@ With `requirejs.undef()`, if you later set up a different config and try to load
 **Note**: errbacks only work with callback-style require calls, not define() calls. define() is only for declaring modules.
 
 <a name="paths_config_fallbacks">
-### paths config fallbacks
+#### paths config fallbacks
 The above pattern for detecting a load failure, undef()ing a module, modifying paths and reloading is a common enough request that there is also a shorthand for it. The paths config allows array values:
 ```javascript
 requirejs.config({
@@ -1175,7 +1175,7 @@ This above code will try the CDN location, but if that fails, fall back to the l
 **Note**: paths fallbacks only work for exact module ID matches. This is different from normal paths config which can apply to any part of a module ID prefix segment. Fallbacks are targeted more for unusual error recovery, not a generic path search path solution, since those are inefficient in the browser.
 
 <a name="Global_requirejs_onError_function">
-### Global requirejs.onError function
+#### Global requirejs.onError function
 To detect errors that are not caught by local errbacks, you can override requirejs.onError():
 ```javascript
 requirejs.onError = function (err) {
@@ -1189,17 +1189,17 @@ requirejs.onError = function (err) {
 ```
 
 <a name="Loader_Plugins">
-# LOADER PLUGINS
+## LOADER PLUGINS
 RequireJS supports loader plugins. This is a way to support dependencies that are not plain JS files, but are still important for a script to have loaded before it can do its work. The RequireJS wiki has a list of plugins. This section talks about some specific plugins that are maintained alongside RequireJS:
 
 <a name="Specify_a_Text_File_Dependency">
-## Specify a Text File Dependency
+### Specify a Text File Dependency
 It is nice to build HTML using regular HTML tags, instead of building up DOM structures in script. However, there is no good way to embed HTML in a JavaScript file. The best that can be done is using a string of HTML, but that can be hard to manage, particularly for multi-line HTML.
 
 RequireJS has a plugin, text.js, that can help with this issue. It will automatically be loaded if the text! prefix is used for a dependency. See the [text.js README](https://github.com/requirejs/text) for more information.
 
 <a name="Page_Load_Event_Support_DOM_Ready">
-## Page Load Event Support/DOM Ready
+### Page Load Event Support/DOM Ready
 It is possible when using RequireJS to load scripts quickly enough that they complete before the DOM is ready. Any work that tries to interact with the DOM should wait for the DOM to be ready. For modern browsers, this is done by waiting for the DOMContentLoaded event.
 
 However, not all browsers in use support DOMContentLoaded. The domReady module implements a cross-browser method to determine when the DOM is ready. Download the module and use it in your project like so:
@@ -1223,7 +1223,7 @@ require(['domReady!'], function (doc) {
 **Note**: If the document takes a while to load (maybe it is a very large document, or has HTML script tags loading large JS files that block DOM completion until they are done), using domReady as a loader plugin may result in a RequireJS "timeout" error. If this a problem either increase the waitSeconds configuration, or just use domReady as a module and call domReady() inside the require() callback.
 
 <a name="Define_an_I18N_Bundle">
-## Define an I18N Bundle(I18N 번들 정의하기)
+### Define an I18N Bundle(I18N 번들 정의하기)
 Once your web app gets to a certain size and popularity, localizing the strings in the interface and providing other locale-specific information becomes more useful. However, it can be cumbersome to work out a scheme that scales well for supporting multiple locales.
 
 웹 응용 프로그램은 특정 크기와 인기에 도달하면, 인터페이스에서 문자열을 지역화하고 다른 지역별 정보를 제공하는 것이 더 유용하게 됩니다. 그렇지만, 여러 지역을 지원하기 위해 잘 조절하는 구조를 만드는 것은 부담이 될 수 있습니다. 
