@@ -6,7 +6,7 @@ COMMON ERRORS
 1. [Mismatched anonymous define() modules ...](#Mismatched_anonymous_define_modules)
 1. [Load timeout for modules: ...](#Load_timeout_for_modules)
 1. [Error evaluating module ...](#Error_evaluating_module)
-1. [odule name ... has not been loaded yet for context: ...](#Module_name_has_not_been_loaded_yet_for_context)
+1. [Module name ... has not been loaded yet for context: ...](#Module_name_has_not_been_loaded_yet_for_context)
 1. [Invalid require call](#Invalid_require_call)
 1. [No define call for ...](#No_define_call_for)
 1. [Script error](#Script_error)
@@ -43,10 +43,15 @@ An error occured when the define() function was called for the module given in t
 In Firefox and WebKit browsers, a line number and file name will be indicated in the error. It can be used to locate the source of the problem. Better isolation of the error can be done by using a debugger to place a breakpoint in the file that contains the error.
 
 <a name="Module_name_has_not_been_loaded_yet_for_context">
-## MODULE NAME ... HAS NOT BEEN LOADED YET FOR CONTEXT: ...
+## MODULE NAME ... HAS NOT BEEN LOADED YET FOR CONTEXT: ...(모듈 이름 ... Context를 위해 아직 로드되지 않았습니다.)
 
 This occurs when there is a require('name') call, but the 'name' module has not been loaded yet.
+
+이것은 require('name')을 호출할 경우 아직 'name' 모듈이 로드되지 않았을 때 발생된다.
+
 If the error message includes Use require([]), then it was a top-level require call (not a require call inside a define() call) that should be using the async, callback version of require to load the code:
+
+만약 require([])를 사용할 때 에러 메시지가 나온다면, 코드를 로드하는데 require의 비동기 콜백 버전을 사용하는 top-level require 요청이다.
 ```javascript
 //If this code is not in a define call,
 //DO NOT use require('foo'), but use the async
