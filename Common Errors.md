@@ -6,7 +6,7 @@ COMMON ERRORS
 1. [Mismatched anonymous define() modules ...](#Mismatched_anonymous_define_modules)
 1. [Load timeout for modules: ...](#Load_timeout_for_modules)
 1. [Error evaluating module ...](#Error_evaluating_module)
-1. [Module name ... has not been loaded yet for context: ...](#Module_name_has_not_been_loaded_yet_for_context)
+1. [모듈 이름 ... Context를 위해 아직 로드되지 않았습니다.](#Module_name_has_not_been_loaded_yet_for_context)
 1. [Invalid require call](#Invalid_require_call)
 1. [No define call for ...](#No_define_call_for)
 1. [Script error](#Script_error)
@@ -47,11 +47,11 @@ In Firefox and WebKit browsers, a line number and file name will be indicated in
 
 This occurs when there is a require('name') call, but the 'name' module has not been loaded yet.
 
-이것은 require('name')을 호출할 경우 아직 'name' 모듈이 로드되지 않았을 때 발생된다.
+이것은 require('name')을 호출할 경우 아직 'name' 모듈이 로드되지 않았을 때 발생됩니다.
 
 If the error message includes Use require([]), then it was a top-level require call (not a require call inside a define() call) that should be using the async, callback version of require to load the code:
 
-만약 require([])를 사용할 때 에러 메시지가 나온다면, 코드를 로드하는데 require의 비동기 콜백 버전을 사용하는 top-level require 요청이다.
+만약 require([])를 사용할 때 에러 메시지가 나온다면, 코드를 로드하는데 require의 비동기 콜백 버전을 사용하는 top-level require 요청입니다.
 ```javascript
 //If this code is not in a define call,
 //DO NOT use require('foo'), but use the async
@@ -61,9 +61,14 @@ require(['foo'], function (foo) {
 });
 ```
 If you are using the simplified define wrapper, make sure you have require as the first argument to the definition function:
+
+만약 당신이 단순화된 define 랩퍼를 사용한다면, 정의한 함수의 첫번째 인수로 요청했는지 확인하십시오.
+
+```javascript
 define(function (require) {
     var namedModule = require('name');
 });
+```
 If you are listing dependencies in the dependency array, make sure that require and name are in the dependency array:
 ```javascript
 define(['require', 'name'], function (require) {
