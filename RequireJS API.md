@@ -297,7 +297,7 @@ define(["my/cart", "my/inventory"],
 );
 ```
 <a name="Define_a_Module_with_Simplified_CommonJS_Wrapper">
-##### Define a Module with Simplified CommonJS Wrapper(모듈을 단순화된 CommonJS 래퍼로 정의하기)
+#### Define a Module with Simplified CommonJS Wrapper(모듈을 단순화된 CommonJS 래퍼로 정의하기)
 If you wish to reuse some code that was written in the traditional CommonJS module format it may be difficult to re-work to the array of dependencies used above, and you may prefer to have direct alignment of dependency name to the local variable used for that dependency. You can use the simplified CommonJS wrapper for those cases:
 
 만약 예전의 CommonJS 모듈 형식으로 작성된 코드를 재사용하고 싶을 때, 위에 사용된 디편던시들의 배열의 형태로 재작업하는 것은 어려울 것이며, 아마도 의존성을 위해 디펜던시들의 이름을 지역변수의 형태로 나열하는 것을 선호할 것 입니다. 이러한 경우에 simplified CommonJS wrapper를 사용할 수가 있습니다:
