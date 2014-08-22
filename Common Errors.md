@@ -63,19 +63,22 @@ require(['foo'], function (foo) {
 If you are using the simplified define wrapper, make sure you have require as the first argument to the definition function:
 
 만약 당신이 단순화된 define 랩퍼를 사용한다면, 정의한 함수의 첫번째 인수로 요청했는지 확인하십시오.
-
 ```javascript
 define(function (require) {
     var namedModule = require('name');
 });
 ```
 If you are listing dependencies in the dependency array, make sure that require and name are in the dependency array:
+
+당신이 dependency 배열에서 dependency를 나열하는 경우, dependency 배열에 'require', 'name'이 있는지 확인하십시오.
 ```javascript
 define(['require', 'name'], function (require) {
     var namedModule = require('name');
 });
 ```
 In particular, the following will not work:
+
+특히, 다음은 작동하지 않습니다:
 ```javascript
 //THIS WILL FAIL
 define(['require'], function (require) {
@@ -83,14 +86,24 @@ define(['require'], function (require) {
 });
 ```
 This fails because requirejs needs to be sure to load and execute all dependencies before calling the factory function above. If a dependency array is given to define(), then requirejs assumes that all dependencies are listed in that array, and it will not scan the factory function for other dependencies. So, either do not pass in the dependency array, or if using the dependency array, list all the dependencies in it.
+
+requirejs는 위 factory 함수를 호출하기 전에 모든 dependency를 로드하고 실행해야하는 필요가 있기 때문에 실패합니다. dependency 배열이 define()에 주어졌다면, requirejs는 모든 dependency가 배열에 열거되었다고 간주하고, 다른 dependency를 위한 factory 함수를 검사하지 않습니다. 그래서 dependency 배열에 통하지 않거나, 만약 dependency 배열을 사용한다면, 그 안에 모든 dependency가 있어야 합니다.
+
 If part of a require() callback, all the dependencies need to be listed in the array:
+
+require() 콜백의 부분이라면, 모든 dependency는 배열안에 열거될 필요가 있습니다.
 ```javascript
 require(['require', 'name'], function (require) {
     var namedModule = require('name');
 });
 ```
 Be sure that require('name') only occurs inside a define() definition function or a require() callback function, never in the global space by its own.
+
+require('name')은 define() 정의 함수안이거나 require() 콜백 함수 안에 나타나지만, 자기 자신에 의해서 글로벌 공간에 나타나지 않는 것을 명심해야 합니다.
+
 In the RequreJS 1.0.x releases, there is a bug with having a space between the require and parens in WebKit browsers when using the simplified CommonJS wrapping (no dependency array):
+
+RequireJS 1.0.x 릴리즈에서 간단한 CommonJS 랩핑을 사용할 경우 WebKit 브라우저에서 require와 괄호 사이에 공백이 있는 버그가 있습니다(dependency 배열에는 없습니다).
 ```javascript
 define(function (require) {
     //Notice the space between require and the arguments.
@@ -98,6 +111,8 @@ define(function (require) {
 });
 ```
 The workaround is to just remove the space. This is fixed in the 2.0 code, and may be backported to the 1.0.x series if a 1.0.9 release is done.
+
+해결방법은 단지 공간을 제거하는 것입니다. 2.0 코드에서는 고쳤졌고, 만약 1.0.x이 1.0.9에서 릴리즈가 끝난다면, 백포트(소급 수정)될 것입니다.
 
 <a name="Invalid_require_call">
 ## INVALID REQUIRE CALL
